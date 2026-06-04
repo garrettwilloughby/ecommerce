@@ -3,6 +3,9 @@ const Product=require("../models/Product")
 
 exports.create=async(req,res)=>{
     try {
+        // confirm user identity
+        // confirm isAdmin
+        // checks or regex on req.body
         const created=new Product(req.body)
         await created.save()
         res.status(201).json(created)

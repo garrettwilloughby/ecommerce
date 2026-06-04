@@ -2,9 +2,10 @@ const express=require('express')
 const productController=require("../controllers/Product")
 const router=express.Router()
 const { verifyToken } = require('../middleware/VerifyToken')
+const { verifyAdmin } = require('../middleware/VerifyAdmin')
 
 router
-    .post("/",verifyToken,productController.create)
+    .post("/",verifyToken,verifyAdmin,productController.create)
     .get("/",verifyToken,productController.getAll)
     .get("/:id",verifyToken,productController.getById)
     .patch("/:id",verifyToken,productController.updateById)
