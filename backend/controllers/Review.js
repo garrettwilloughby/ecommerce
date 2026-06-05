@@ -15,6 +15,9 @@ exports.create=async(req,res)=>{
 exports.getByProductId=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         let skip=0
         let limit=0
 
@@ -41,6 +44,9 @@ exports.getByProductId=async(req,res)=>{
 exports.updateById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const updated=await Review.findByIdAndUpdate(id,req.body,{new:true}).populate('user')
         res.status(200).json(updated)
     } catch (error) {
@@ -52,6 +58,9 @@ exports.updateById=async(req,res)=>{
 exports.deleteById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const deleted=await Review.findByIdAndDelete(id)
         res.status(200).json(deleted)
     } catch (error) {

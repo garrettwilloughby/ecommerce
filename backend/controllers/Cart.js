@@ -14,6 +14,9 @@ exports.create=async(req,res)=>{
 exports.getByUserId=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const result = await Cart.find({ user: id }).populate({path:"product",populate:{path:"brand"}});
 
         res.status(200).json(result)
@@ -26,6 +29,9 @@ exports.getByUserId=async(req,res)=>{
 exports.updateById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const updated=await Cart.findByIdAndUpdate(id,req.body,{new:true}).populate({path:"product",populate:{path:"brand"}});
         res.status(200).json(updated)
     } catch (error) {
@@ -37,6 +43,9 @@ exports.updateById=async(req,res)=>{
 exports.deleteById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const deleted=await Cart.findByIdAndDelete(id)
         res.status(200).json(deleted)
     } catch (error) {
@@ -49,6 +58,9 @@ exports.deleteByUserId=async(req,res)=>{
 
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         await Cart.deleteMany({user:id})
         res.sendStatus(204)
     } catch (error) {

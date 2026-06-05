@@ -14,6 +14,9 @@ exports.create=async(req,res)=>{
 exports.getByUserId=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(404).json({message:"User not authorized for this action"})
+        }
         const results=await Order.find({user:id})
         res.status(200).json(results)
     } catch (error) {
@@ -49,6 +52,9 @@ exports.getAll = async (req, res) => {
 exports.updateById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const updated=await Order.findByIdAndUpdate(id,req.body,{new:true})
         res.status(200).json(updated)
     } catch (error) {

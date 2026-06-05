@@ -63,6 +63,9 @@ exports.getAll = async (req, res) => {
 exports.getById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const result=await Product.findById(id).populate("brand").populate("category")
         res.status(200).json(result)
     } catch (error) {
@@ -74,6 +77,9 @@ exports.getById=async(req,res)=>{
 exports.updateById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const updated=await Product.findByIdAndUpdate(id,req.body,{new:true})
         res.status(200).json(updated)
     } catch (error) {
@@ -85,6 +91,9 @@ exports.updateById=async(req,res)=>{
 exports.undeleteById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const unDeleted=await Product.findByIdAndUpdate(id,{isDeleted:false},{new:true}).populate('brand')
         res.status(200).json(unDeleted)
     } catch (error) {
@@ -96,6 +105,9 @@ exports.undeleteById=async(req,res)=>{
 exports.deleteById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const deleted=await Product.findByIdAndUpdate(id,{isDeleted:true},{new:true}).populate("brand")
         res.status(200).json(deleted)
     } catch (error) {

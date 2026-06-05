@@ -13,6 +13,9 @@ exports.create=async(req,res)=>{
 exports.getByUserId=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         let skip=0
         let limit=0
 
@@ -37,6 +40,9 @@ exports.getByUserId=async(req,res)=>{
 exports.updateById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const updated=await Wishlist.findByIdAndUpdate(id,req.body,{new:true}).populate("product")
         res.status(200).json(updated)
     } catch (error) {
@@ -47,6 +53,9 @@ exports.updateById=async(req,res)=>{
 exports.deleteById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+        }
         const deleted=await Wishlist.findByIdAndDelete(id)
         return res.status(200).json(deleted)
     } catch (error) {
