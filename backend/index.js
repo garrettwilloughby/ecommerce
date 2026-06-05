@@ -14,10 +14,12 @@ const addressRoutes=require('./routes/Address')
 const reviewRoutes=require("./routes/Review")
 const wishlistRoutes=require("./routes/Wishlist")
 const { connectToDB } = require("./database/db")
+const helmet = require('helmet')
 
 
 // server init
 const server=express()
+
 
 // database connection
 connectToDB()
@@ -28,6 +30,7 @@ server.use(cors({origin:process.env.ORIGIN,credentials:true,exposedHeaders:['X-T
 server.use(express.json())
 server.use(cookieParser())
 server.use(morgan("tiny"))
+server.use(helmet())
 
 // routeMiddleware
 server.use("/auth",authRoutes)
