@@ -13,8 +13,9 @@ exports.create=async(req,res)=>{
 exports.getByUserId=async(req,res)=>{
     try {
         const {id}=req.params
-        if (req.params != req.user) {
+        if (req.params.id != req.user) {
             res.status(401).json({message:"User not authorized for this action"})
+            return;
         }
         let skip=0
         let limit=0
@@ -30,7 +31,7 @@ exports.getByUserId=async(req,res)=>{
         const result=await Wishlist.find({user:id}).skip(skip).limit(limit).populate({path:"product",populate:['brand']})
         const totalResults=await Wishlist.find({user:id}).countDocuments().exec()
 
-        console.log("user" + id + " | WishList getByUserId")
+        console.log("user" + req.params.id + " | WishList getByUserId")
 
         res.set("X-Total-Count",totalResults)
         res.status(200).json(result)
@@ -42,12 +43,13 @@ exports.getByUserId=async(req,res)=>{
 exports.updateById=async(req,res)=>{
     try {
         const {id}=req.params
-        if (req.params != req.user) {
+        if (req.params.id != req.user) {
             res.status(401).json({message:"User not authorized for this action"})
+            return;
         }
         const updated=await Wishlist.findByIdAndUpdate(id,req.body,{new:true}).populate("product")
 
-        console.log("user" + id + " | updateById")
+        console.log("user" + req.params.id + " | updateById")
         res.status(200).json(updated)
     } catch (error) {
         console.log(error);
@@ -57,12 +59,13 @@ exports.updateById=async(req,res)=>{
 exports.deleteById=async(req,res)=>{
     try {
         const {id}=req.params
-        if (req.params != req.user) {
+        if (req.params.id != req.user) {
             res.status(401).json({message:"User not authorized for this action"})
+            return;
         }
         const deleted=await Wishlist.findByIdAndDelete(id)
 
-        console.log("user" + id + " | deleteById")
+        console.log("user" + req.params.id + " | deleteById")
         return res.status(200).json(deleted)
     } catch (error) {
         console.log(error);

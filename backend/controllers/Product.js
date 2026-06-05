@@ -64,11 +64,12 @@ exports.getAll = async (req, res) => {
 exports.getById=async(req,res)=>{
     try {
         const {id}=req.params
-        if (req.params != req.user) {
+        if (req.params.id != req.user) {
             res.status(401).json({message:"User not authorized for this action"})
+            return;
         }
         const result=await Product.findById(id).populate("brand").populate("category")
-        console.log("user" + id + " | Product GetByID")
+        console.log("user" + req.params.id + " | Product GetByID")
         res.status(200).json(result)
     } catch (error) {
         console.log(error);
@@ -79,12 +80,13 @@ exports.getById=async(req,res)=>{
 exports.updateById=async(req,res)=>{
     try {
         const {id}=req.params
-        if (req.params != req.user) {
+        if (req.params.id != req.user) {
             res.status(401).json({message:"User not authorized for this action"})
+            return;
         }
         const updated=await Product.findByIdAndUpdate(id,req.body,{new:true})
 
-        console.log("user" + id + " | Product UpdateByID")
+        console.log("user" + req.params.id + " | Product UpdateByID")
         res.status(200).json(updated)
     } catch (error) {
         console.log(error);
@@ -95,12 +97,13 @@ exports.updateById=async(req,res)=>{
 exports.undeleteById=async(req,res)=>{
     try {
         const {id}=req.params
-        if (req.params != req.user) {
+        if (req.params.id != req.user) {
             res.status(401).json({message:"User not authorized for this action"})
+            return;
         }
         const unDeleted=await Product.findByIdAndUpdate(id,{isDeleted:false},{new:true}).populate('brand')
 
-        console.log("user" + id + " | Product undeleteById")
+        console.log("user" + req.params.id + " | Product undeleteById")
         res.status(200).json(unDeleted)
     } catch (error) {
         console.log(error);
@@ -111,12 +114,13 @@ exports.undeleteById=async(req,res)=>{
 exports.deleteById=async(req,res)=>{
     try {
         const {id}=req.params
-        if (req.params != req.user) {
+        if (req.params.id != req.user) {
             res.status(401).json({message:"User not authorized for this action"})
+            return;
         }
         const deleted=await Product.findByIdAndUpdate(id,{isDeleted:true},{new:true}).populate("brand")
 
-        console.log("user" + id + " | deleteById")
+        console.log("user" + req.params.id + " | deleteById")
         res.status(200).json(deleted)
     } catch (error) {
         console.log(error);
