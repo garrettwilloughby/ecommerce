@@ -18,6 +18,7 @@ exports.getByUserId = async (req, res) => {
             res.status(404).json({message:"User not authorized for this action"})
         }
         const results=await Address.find({user:id})
+        console.log("user" + id + " | Address getByUserId")
         res.status(200).json(results)
     
     } catch (error) {
@@ -33,6 +34,7 @@ exports.updateById=async(req,res)=>{
             res.status(404).json({message:"User not authorized for this action"})
         }
         const updated=await Address.findByIdAndUpdate(id,req.body,{new:true})
+        console.log("user" + id + " | Address updateById")
         console.log(updated);
         res.status(200).json(updated)
     } catch (error) {
@@ -48,6 +50,7 @@ exports.deleteById=async(req,res)=>{
             res.status(404).json({message:"User not authorized for this action"})
         }
         const deleted=await Address.findByIdAndDelete(id)
+        console.log("user" + id + " | Address deleteById")
         res.status(200).json(deleted)
     } catch (error) {
         console.log(error);

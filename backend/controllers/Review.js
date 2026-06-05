@@ -5,6 +5,7 @@ exports.create=async(req,res)=>{
         console.log(req.body);
         const created=await new Review(req.body).populate({path:'user',select:"-password"})
         await created.save()
+        console.log("Review created")
         res.status(201).json(created)
     } catch (error) {
         console.log(error);
@@ -32,6 +33,7 @@ exports.getByProductId=async(req,res)=>{
         const totalDocs=await Review.find({product:id}).countDocuments().exec()
         const result=await Review.find({product:id}).skip(skip).limit(limit).populate('user').exec()
 
+        console.log("user" + id + " | Review GetByProductID")
         res.set("X-total-Count",totalDocs)
         res.status(200).json(result)
 
@@ -48,6 +50,8 @@ exports.updateById=async(req,res)=>{
             res.status(401).json({message:"User not authorized for this action"})
         }
         const updated=await Review.findByIdAndUpdate(id,req.body,{new:true}).populate('user')
+
+        console.log("user" + id + " | Review UpdateByID")
         res.status(200).json(updated)
     } catch (error) {
         console.log(error);
@@ -62,6 +66,7 @@ exports.deleteById=async(req,res)=>{
             res.status(401).json({message:"User not authorized for this action"})
         }
         const deleted=await Review.findByIdAndDelete(id)
+        console.log("user" + id + " | Review deleteById")
         res.status(200).json(deleted)
     } catch (error) {
         console.log(error);

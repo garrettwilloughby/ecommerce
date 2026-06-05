@@ -18,6 +18,7 @@ exports.getByUserId=async(req,res)=>{
             res.status(404).json({message:"User not authorized for this action"})
         }
         const results=await Order.find({user:id})
+        console.log("user" + id + " | Order GetByUserId")
         res.status(200).json(results)
     } catch (error) {
         console.log(error);
@@ -56,6 +57,8 @@ exports.updateById=async(req,res)=>{
             res.status(401).json({message:"User not authorized for this action"})
         }
         const updated=await Order.findByIdAndUpdate(id,req.body,{new:true})
+
+        console.log("user" + id + " | Order UpdateById")
         res.status(200).json(updated)
     } catch (error) {
         console.log(error);

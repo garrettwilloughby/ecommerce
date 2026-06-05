@@ -8,6 +8,7 @@ exports.create=async(req,res)=>{
         // checks or regex on req.body
         const created=new Product(req.body)
         await created.save()
+        console.log("Product Created")
         res.status(201).json(created)
     } catch (error) {
         console.log(error);
@@ -67,6 +68,7 @@ exports.getById=async(req,res)=>{
             res.status(401).json({message:"User not authorized for this action"})
         }
         const result=await Product.findById(id).populate("brand").populate("category")
+        console.log("user" + id + " | Product GetByID")
         res.status(200).json(result)
     } catch (error) {
         console.log(error);
@@ -81,6 +83,8 @@ exports.updateById=async(req,res)=>{
             res.status(401).json({message:"User not authorized for this action"})
         }
         const updated=await Product.findByIdAndUpdate(id,req.body,{new:true})
+
+        console.log("user" + id + " | Product UpdateByID")
         res.status(200).json(updated)
     } catch (error) {
         console.log(error);
@@ -95,6 +99,8 @@ exports.undeleteById=async(req,res)=>{
             res.status(401).json({message:"User not authorized for this action"})
         }
         const unDeleted=await Product.findByIdAndUpdate(id,{isDeleted:false},{new:true}).populate('brand')
+
+        console.log("user" + id + " | Product undeleteById")
         res.status(200).json(unDeleted)
     } catch (error) {
         console.log(error);
@@ -109,6 +115,8 @@ exports.deleteById=async(req,res)=>{
             res.status(401).json({message:"User not authorized for this action"})
         }
         const deleted=await Product.findByIdAndUpdate(id,{isDeleted:true},{new:true}).populate("brand")
+
+        console.log("user" + id + " | deleteById")
         res.status(200).json(deleted)
     } catch (error) {
         console.log(error);

@@ -30,6 +30,8 @@ exports.getByUserId=async(req,res)=>{
         const result=await Wishlist.find({user:id}).skip(skip).limit(limit).populate({path:"product",populate:['brand']})
         const totalResults=await Wishlist.find({user:id}).countDocuments().exec()
 
+        console.log("user" + id + " | WishList getByUserId")
+
         res.set("X-Total-Count",totalResults)
         res.status(200).json(result)
     } catch (error) {
@@ -44,6 +46,8 @@ exports.updateById=async(req,res)=>{
             res.status(401).json({message:"User not authorized for this action"})
         }
         const updated=await Wishlist.findByIdAndUpdate(id,req.body,{new:true}).populate("product")
+
+        console.log("user" + id + " | updateById")
         res.status(200).json(updated)
     } catch (error) {
         console.log(error);
@@ -57,6 +61,8 @@ exports.deleteById=async(req,res)=>{
             res.status(401).json({message:"User not authorized for this action"})
         }
         const deleted=await Wishlist.findByIdAndDelete(id)
+
+        console.log("user" + id + " | deleteById")
         return res.status(200).json(deleted)
     } catch (error) {
         console.log(error);

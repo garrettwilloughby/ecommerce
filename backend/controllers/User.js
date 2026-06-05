@@ -8,6 +8,7 @@ exports.getById=async(req,res)=>{
         }
         const result=(await User.findById(id)).toObject()
         delete result.password
+        console.log("user" + id + " | User GetById")
         res.status(200).json(result)
         
     } catch (error) {
@@ -23,6 +24,7 @@ exports.updateById=async(req,res)=>{
         }
         const updated=(await User.findByIdAndUpdate(id,req.body,{new:true})).toObject()
         delete updated.password
+        console.log("user" + id + " | UpdateByID")
         res.status(200).json(updated)
 
     } catch (error) {

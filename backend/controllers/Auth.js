@@ -38,6 +38,8 @@ exports.signup=async(req,res)=>{
             secure:process.env.PRODUCTION==='true'?true:false
         })
 
+        console.log("user" + secureInfo.userId + " | Signup")
+
         res.status(201).json(sanitizeUser(createdUser))
 
     } catch (error) {
@@ -67,6 +69,7 @@ exports.login=async(req,res)=>{
                 httpOnly:true,
                 secure:process.env.PRODUCTION==='true'?true:false
             })
+            console.log("user" + existingUser.userId + " | Login")
             return res.status(200).json(sanitizeUser(existingUser))
         }
 
