@@ -14,7 +14,12 @@ exports.create=async(req,res)=>{
 exports.getByUserId = async (req, res) => {
     try {
         const {id}=req.params
+        if (req.params.id != req.user) {
+            res.status(404).json({message:"User not authorized for this action"})
+            return;
+        }
         const results=await Address.find({user:id})
+        console.log("user" + req.params.id + " | Address getByUserId")
         res.status(200).json(results)
     
     } catch (error) {
@@ -26,7 +31,12 @@ exports.getByUserId = async (req, res) => {
 exports.updateById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params.id != req.user) {
+            res.status(404).json({message:"User not authorized for this action"})
+            return;
+        }
         const updated=await Address.findByIdAndUpdate(id,req.body,{new:true})
+        console.log("user" + req.params.id + " | Address updateById")
         console.log(updated);
         res.status(200).json(updated)
     } catch (error) {
@@ -38,7 +48,12 @@ exports.updateById=async(req,res)=>{
 exports.deleteById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params.id != req.user) {
+            res.status(404).json({message:"User not authorized for this action"})
+            return;
+        }
         const deleted=await Address.findByIdAndDelete(id)
+        console.log("user" + req.params.id + " | Address deleteById")
         res.status(200).json(deleted)
     } catch (error) {
         console.log(error);

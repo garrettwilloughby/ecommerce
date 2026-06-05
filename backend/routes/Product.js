@@ -9,7 +9,7 @@ router
     .get("/",verifyToken,productController.getAll)
     .get("/:id",verifyToken,productController.getById)
     .patch("/:id",verifyToken,productController.updateById)
-    .patch("/undelete/:id",verifyToken,productController.undeleteById)
-    .delete("/:id",verifyToken,productController.deleteById)
+    .patch("/undelete/:id",verifyToken,verifyAdmin,productController.undeleteById)
+    .delete("/:id",verifyToken,verifyAdmin,productController.deleteById)
 
 module.exports=router

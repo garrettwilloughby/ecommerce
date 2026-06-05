@@ -5,6 +5,7 @@ exports.create=async(req,res)=>{
         console.log(req.body);
         const created=await new Review(req.body).populate({path:'user',select:"-password"})
         await created.save()
+        console.log("Review created")
         res.status(201).json(created)
     } catch (error) {
         console.log(error);
@@ -15,6 +16,10 @@ exports.create=async(req,res)=>{
 exports.getByProductId=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params.id != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+            return;
+        }
         let skip=0
         let limit=0
 
@@ -29,6 +34,7 @@ exports.getByProductId=async(req,res)=>{
         const totalDocs=await Review.find({product:id}).countDocuments().exec()
         const result=await Review.find({product:id}).skip(skip).limit(limit).populate('user').exec()
 
+        console.log("user" + req.params.id + " | Review GetByProductID")
         res.set("X-total-Count",totalDocs)
         res.status(200).json(result)
 
@@ -41,7 +47,13 @@ exports.getByProductId=async(req,res)=>{
 exports.updateById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params.id != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+            return;
+        }
         const updated=await Review.findByIdAndUpdate(id,req.body,{new:true}).populate('user')
+
+        console.log("user" + req.params.id + " | Review UpdateByID")
         res.status(200).json(updated)
     } catch (error) {
         console.log(error);
@@ -52,7 +64,12 @@ exports.updateById=async(req,res)=>{
 exports.deleteById=async(req,res)=>{
     try {
         const {id}=req.params
+        if (req.params.id != req.user) {
+            res.status(401).json({message:"User not authorized for this action"})
+            return;
+        }
         const deleted=await Review.findByIdAndDelete(id)
+        console.log("user" + req.params.id + " | Review deleteById")
         res.status(200).json(deleted)
     } catch (error) {
         console.log(error);
