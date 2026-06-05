@@ -1,13 +1,15 @@
 const express=require('express')
 const productController=require("../controllers/Product")
 const router=express.Router()
+const { verifyToken } = require('../middleware/VerifyToken')
+const { verifyAdmin } = require('../middleware/VerifyAdmin')
 
 router
-    .post("/",productController.create)
-    .get("/",productController.getAll)
-    .get("/:id",productController.getById)
-    .patch("/:id",productController.updateById)
-    .patch("/undelete/:id",productController.undeleteById)
-    .delete("/:id",productController.deleteById)
+    .post("/",verifyToken,verifyAdmin,productController.create)
+    .get("/",verifyToken,productController.getAll)
+    .get("/:id",verifyToken,productController.getById)
+    .patch("/:id",verifyToken,productController.updateById)
+    .patch("/undelete/:id",verifyToken,productController.undeleteById)
+    .delete("/:id",verifyToken,productController.deleteById)
 
 module.exports=router
